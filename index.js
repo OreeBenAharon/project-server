@@ -24,7 +24,7 @@ app.get('/receptions/:file', verify, (req, res) => {
     // res.download(req.params.file)
     var options = {
         root: path.join(__dirname, `/receptions/`),
-        headers: {'filename': "123.txt"}
+        headers: {'filename':"123.txt"}
     }
     
     // console.log(req.params.file)
