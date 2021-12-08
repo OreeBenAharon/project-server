@@ -1,4 +1,5 @@
 const express = require('express')
+let port = process.env.PORT||1001
 const path = require('path');
 
 const { verify } = require ("./verify");
@@ -16,6 +17,7 @@ app.use('/store', require('./routes/store'))
 app.use('/cart', require('./routes/cart'))
 app.use('/order', require('./routes/order'))
 app.use('/admin', require('./routes/admin'))
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -52,4 +54,4 @@ app.get('/receptions/:file', verify, (req, res) => {
 // });
 
 
-app.listen(14321, ()=>console.log("listening to 1001"))
+app.listen(port, ()=>console.log("listening to",port))
