@@ -17,6 +17,9 @@ app.use('/cart', require('./routes/cart'))
 app.use('/order', require('./routes/order'))
 app.use('/admin', require('./routes/admin'))
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+  })
 
 app.get('/receptions/:file', verify, (req, res) => {
 
