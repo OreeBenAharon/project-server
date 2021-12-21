@@ -39,3 +39,4 @@ const myQuery = (q) =>{
 })}
 
 module.exports = { myQuery };
+
