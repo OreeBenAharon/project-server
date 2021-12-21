@@ -2,10 +2,10 @@ const mysql = require("mysql")
 
 const con = mysql.createConnection({
 
-    host:"eu-cdbr-west-01.cleardb.com",
-    user:"b70d4b44da7345",
-    password:"723bba51",
-    database:"heroku_a937d7843c7528a",
+    host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
+    user:"doadmin",
+    password:"SJXpXrc9zold99yh",
+    database:"defaultdb",
     timezone:"Z"
 })
 
