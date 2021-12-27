@@ -1,7 +1,7 @@
 const mysql = require("mysql")
 
 const con = mysql.createPool({
-
+    connectionLimit : 10,
     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
     user:"doadmin",
     password:"SJXpXrc9zold99yh",
