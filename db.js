@@ -10,7 +10,8 @@ const con = mysql.createPool({
     user:"doadmin",
     password:"SJXpXrc9zold99yh",
     database:"defaultdb",
-    timezone:"Z"
+    timezone:"Z",
+    port:25060
 })
 
 con.on('connection', function (connection) {
