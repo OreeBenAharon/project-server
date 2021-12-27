@@ -1,6 +1,6 @@
 const mysql = require("mysql")
 
-const con = mysql.createConnection({
+const con = mysql.createPool({
 
     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
     user:"doadmin",
@@ -8,6 +8,15 @@ const con = mysql.createConnection({
     database:"defaultdb",
     timezone:"Z"
 })
+
+// const con = mysql.createConnection({
+
+//     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
+//     user:"doadmin",
+//     password:"SJXpXrc9zold99yh",
+//     database:"defaultdb",
+//     timezone:"Z"
+// })
 
 // const con = mysql.createConnection({
 
