@@ -1,7 +1,11 @@
 const mysql = require("mysql")
 
 const con = mysql.createPool({
-    connectionLimit : 10,
+    // connectionLimit : 10,
+    connectionLimit : 1000,
+    connectTimeout  : 60 * 60 * 1000,
+    acquireTimeout  : 60 * 60 * 1000,
+    timeout         : 60 * 60 * 1000,
     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
     user:"doadmin",
     password:"SJXpXrc9zold99yh",
@@ -18,7 +22,7 @@ con.on('connection', function (connection) {
         console.error(new Date(), 'MySQL close', err);
         });
   });
-  
+
 // const con = mysql.createConnection({
 
 //     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
