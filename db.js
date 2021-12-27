@@ -9,6 +9,16 @@ const con = mysql.createPool({
     timezone:"Z"
 })
 
+con.on('connection', function (connection) {
+    console.log('DB Connection established');
+    connection.on('error', function (err) {
+        console.error(new Date(), 'MySQL error', err.code);
+        });
+    connection.on('close', function (err) {
+        console.error(new Date(), 'MySQL close', err);
+        });
+  });
+  
 // const con = mysql.createConnection({
 
 //     host:"db-mysql-nyc3-46477-do-user-10481534-0.b.db.ondigitalocean.com",
@@ -27,14 +37,17 @@ const con = mysql.createPool({
 //     timezone:"Z"
 // })
 
-con.connect(err=>{
-    if (err) {
-        console.log(err)
-    } else {
-        console.log("connected to mysql")    
-        }
-    }
-    )
+// con.connect(err=>{
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log("connected to mysql")    
+//         }
+//     }
+//     )
+
+
+
 
 const myQuery = (q) =>{
     return new Promise ((resolve,reject)=>{
