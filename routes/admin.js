@@ -12,7 +12,7 @@ router.post("/add", verify, async (req,res)=> {
         if (!title || !categ || !price || !pic) {
             return res.status(400).send("Info from admin is missing.")
           }
-        await myQuery (`INSERT INTO products (title,categ_id,price,pic) VALUES ("${title}", ${categ}, ${price}, "${pic}")`)
+        await myQuery (`INSERT INTO products (title,categ_id,price,pic) VALUES ('${title}', ${categ}, ${price}, '${pic}')`)
         const products = await myQuery ("SELECT * FROM products")
         return res.status(200).send({products})
     } catch (err) {
@@ -31,7 +31,7 @@ router.put("/edit", verify, async (req,res)=> {
             console.log(!!productId, !!title, !!categ, !!price, !!pic)
             return res.status(400).send("Info from admin is missing.")
           }
-        await myQuery (`UPDATE products SET title = "${title}", categ_id = ${categ}, price = ${price}, pic = "${pic}" WHERE id = ${productId}`)
+        await myQuery (`UPDATE products SET title = '${title}', categ_id = ${categ}, price = ${price}, pic = '${pic}' WHERE id = ${productId}`)
         const products = await myQuery ("SELECT * FROM products")
         return res.status(200).send({products})
     } catch (err) {

@@ -74,7 +74,7 @@ router.post("/add", verify, async (req,res)=> {
 
             let createdAt = new Date
             createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ')
-            await myQuery (`INSERT INTO carts (user_id,created) VALUES (${id}, "${createdAt}")`)
+            await myQuery (`INSERT INTO carts (user_id,created) VALUES (${id}, '${createdAt}')`)
             const allUserCarts = await myQuery (`SELECT (id) FROM carts WHERE user_id = ${id}`)
             const cartId = allUserCarts[allUserCarts.length-1].id
             await myQuery (`INSERT INTO cart_products (product_id, amount, cart_id) VALUES (${productId}, ${amount}, ${cartId})`)
@@ -155,28 +155,5 @@ router.delete("/empty", verify, async (req,res)=> {
         return res.status(500).send(err);
     }
 });
-
-// router.get("/search", verify, async (req,res)=> {
-//     if (req.user.admin) {
-//         return res.status(403).send("Wrong identity")
-//     }
-//     try{
-//         const {id} = req.user
-//         const {query} = req.headers
-//         if (!id || !query) {
-//             return res.status(400).send("Info from user is missing.")
-//         }
-//         const cartId = (await myQuery (`SELECT * FROM carts WHERE user_id = ${id}`))[0].id
-//         const results = await myQuery (`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId} AND title LIKE '%${query}%'`)
-//         return res.status(200).send(results)
-//     } catch (err) {
-//         console.log(err)
-//         return res.status(500).send(err);
-
-//     }
-// });
-
-
-
 
 module.exports = router

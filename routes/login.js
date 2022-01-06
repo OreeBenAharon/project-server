@@ -22,7 +22,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).send("Username or password are missing")
     }
     try{
-        const user = await myQuery(`SELECT * FROM users WHERE "username" = "${username}"`)
+        const user = await myQuery(`SELECT * FROM users WHERE username = '${username}'`)
         console.log("user is "+JSON.stringify(user))
         if (user.length === 0) {
             return res.status(400).send({msg:"User does not exist"})
@@ -126,7 +126,7 @@ router.post("/reg", async (req,res)=> {
         }
 
         const encPass = await bcrypt.hash(password, 10)
-        await myQuery (`INSERT INTO users (id, fname, lname, username, password, city, street, admin) VALUES (${id}, "${fname}", "${lname}", "${username}", "${encPass}", "${city}", "${street}", false)`)
+        await myQuery (`INSERT INTO users (id, fname, lname, username, password, city, street, admin) VALUES (${id}, '${fname}', '${lname}', '${username}', '${encPass}', '${city}', '${street}', false)`)
         return res.status(201).send("Registration complete")
         
     }  catch (err) {

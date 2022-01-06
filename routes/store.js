@@ -50,7 +50,7 @@ router.get("/products/title/:title", verify, async (req,res)=> {
         return res.status(403).send("Wrong identity")
     }
     try{
-        const products = await myQuery (`SELECT * FROM products WHERE title LIKE "%${req.params.title}%"`)
+        const products = await myQuery (`SELECT * FROM products WHERE title LIKE '%${req.params.title}%'`)
         // console.log(details)
         res.send({products})
     } catch (err) {

@@ -36,7 +36,7 @@ router.post("/", verify, async (req,res)=> {
         const totalRes = await myQuery (`SELECT SUM (price * amount) AS result FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId}`)
         const total = totalRes[0].result
         console.log("total is",total)
-        await myQuery (`INSERT INTO orders (user_id, cart_id, total, city, street, date, ordered_at, credit_card) VALUES (${id}, ${cartId}, ${total}, "${city}", "${street}", "${date}", "${orderedAt}", ${card})`)
+        await myQuery (`INSERT INTO orders (user_id, cart_id, total, city, street, date, ordered_at, credit_card) VALUES (${id}, ${cartId}, ${total}, '${city}', '${street}', '${date}', '${orderedAt}', ${card})`)
         const order = await myQuery (`SELECT * FROM orders WHERE user_id = ${id}`)
         const orderId = order[order.length-1].id
         console.log("order got is",order,"and id is",orderId)
@@ -73,7 +73,7 @@ router.get("/checkday", verify, async (req,res)=> {
         if (!date) {
             return res.status(400).send("Info from user is missing.")
           }
-        const result = (await myQuery (`SELECT COUNT(date) AS result FROM orders WHERE date = "${date}"`))[0].result
+        const result = (await myQuery (`SELECT COUNT(date) AS result FROM orders WHERE date = '${date}'`))[0].result
         console.log(result)
         return res.status(200).send(result < 3)
     } catch (err) {
