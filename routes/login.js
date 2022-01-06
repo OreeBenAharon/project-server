@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
         city: user[0].city,
         street: user[0].street
       }
-        // בודק אם יש עגלה קיימת למשתמש
+        // checks if there is already a cart
       let cart = []
       let cartDate = ""
       let userStatus = 0
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
       // user already has an open cart
       const allOrders = await myQuery(`SELECT * FROM orders WHERE user_id = ${user[0].id}`)
       if (allOrders.length > 0) {
-        // המשתמש הזמין אי פעם משהו
+        // has the user ever ordered anything
 
         const allCarts = await myQuery (`SELECT * FROM carts WHERE user_id = ${user[0].id}`)
         const cartId = allCarts[allCarts.length-1].id
@@ -109,6 +109,7 @@ router.post("/login", async (req, res) => {
   router.get("/ifusernameexists", async (req,res)=> {
     try{
         const {username} = req.headers
+        console.log(`SELECT * FROM users WHERE username = "${username}"`)
         let usernames = await myQuery (`SELECT * FROM users WHERE username = "${username}"`)
         return res.status(200).send(usernames.length > 0)
     } catch (err) {
