@@ -22,7 +22,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).send("Username or password are missing")
     }
     try{
-        const user = await myQuery(`SELECT * FROM users WHERE username = "${username}"`)
+        const user = await myQuery(`SELECT * FROM users WHERE "username" = "${username}"`)
         console.log("user is "+JSON.stringify(user))
         if (user.length === 0) {
             return res.status(400).send({msg:"User does not exist"})
