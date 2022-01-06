@@ -109,8 +109,8 @@ router.post("/login", async (req, res) => {
   router.get("/ifusernameexists", async (req,res)=> {
     try{
         const {username} = req.headers
-        console.log(`SELECT * FROM users WHERE "username" = "${username}"`)
-        let usernames = await myQuery (`SELECT * FROM users WHERE "username" = "${username}"`)
+        console.log(`SELECT * FROM users WHERE 'username' = '${username}'`)
+        let usernames = await myQuery (`SELECT * FROM users WHERE 'username' = '${username}'`)
         return res.status(200).send(usernames.length > 0)
     } catch (err) {
         console.log(err)
