@@ -40,14 +40,14 @@ router.post("/add", verify, async (req,res)=> {
         if (!id || !amount) {
             return res.status(400).send("Info from user is missing.")
           }
-
-            // checks if user already had any cart
-
         const existingCart = await myQuery (`SELECT * FROM carts WHERE user_id = ${id}`)
         console.log("existingCart is", existingCart)
+
+          // checks if user already had any cart, status > 0?
+
         if (existingCart.length > 0) {
 
-            // if he has a cart already, take his last cart's id
+            // if he has any cart, take his last cart's id
 
             const cartId = existingCart[existingCart.length-1].id
             console.log("existingCart",existingCart,"cartId",cartId)
@@ -81,9 +81,10 @@ router.post("/add", verify, async (req,res)=> {
 
                 return res.status(201).send({cart})
                 }
+            }
         } else { 
 
-            //  User don't have a cart at all. Creates cart
+            //  if user don't have a cart at all, or never had a cart. Creates cart
 
             let createdAt = new Date
             createdAt = createdAt.toISOString().slice(0, 19).replace('T', ' ')
