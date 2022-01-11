@@ -35,25 +35,38 @@ router.post("/add", verify, async (req,res)=> {
         return res.status(403).send("Wrong identity")
     }
     try{
-        const {id} = req.user
+        const {id,status} = req.user
         const {productId,amount} = req.body
         if (!id || !amount) {
             return res.status(400).send("Info from user is missing.")
           }
 
+            // checks if user already had any cart
+
         const existingCart = await myQuery (`SELECT * FROM carts WHERE user_id = ${id}`)
-        const cartId = existingCart[existingCart.length-1].id
-        console.log("existingCart",existingCart,"cartId",cartId)
+        console.log("existingCart is", existingCart)
+        if (existingCart.length > 0) {
 
-        const orderedCart = await myQuery (`SELECT * FROM orders WHERE cart_id = ${cartId}`)
-        console.log("ordered carts",orderedCart)
-        console.log("result???",orderedCart.length)
-        // user already has an open cart
+            // if he has a cart already, take his last cart's id
 
-        if (orderedCart.length === 0) {
-            // // cart if still open
+            const cartId = existingCart[existingCart.length-1].id
+            console.log("existingCart",existingCart,"cartId",cartId)
 
-        //product already in user's cart?
+            // to see if this cart is active or already ordered, 
+            // checks if this cart's id exist in orders table.
+            // if true, create a new cart.
+            // if false, continue adding products to last cart, which is active.
+            
+            const orderedCart = await myQuery (`SELECT * FROM orders WHERE cart_id = ${cartId}`)
+            console.log("ordered carts",orderedCart)
+            console.log("result???",orderedCart.length)
+
+            // checks cart if still active, which means it still has not been ordered
+
+            if (orderedCart.length === 0) {
+
+            // checks if product already in user's cart, in order not adding it twice
+
             const product = await myQuery (`SELECT * FROM cart_products WHERE product_id = ${productId} AND cart_id = ${cartId}`)
             console.log("product exist?",product)
             if (product.length > 0) { // if it exists...
