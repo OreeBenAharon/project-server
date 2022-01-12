@@ -76,16 +76,19 @@ router.post("/login", async (req, res) => {
           if (cart.length > 0) {
             userStatus = 2
             cartDate = allCarts[allCarts.length-1].created
-
+            console.log("2, sends",token,cart,cartDate,userData,userStatus)
             return res.status(200).send({token,cart,cartDate,userData,userStatus})
           } 
         } 
           userStatus = 1
           const lastOrder = allOrders[allOrders.length-1]
           const lastCart = await myQuery(`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${lastOrder.cart_id}`)
+          console.log("1, sends",token,cart,lastOrder,lastCart,userData,userStatus)
+
           return res.status(200).send({token,cart,lastOrder,lastCart,userData,userStatus})
       } else {
             userStatus = 0
+            console.log("0, sends",token,cart,userData,userStatus)
             return res.status(200).send({token,cart,userData,userStatus})
         }   
       
