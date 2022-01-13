@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
       }
       // user already has an open cart
       const allOrders = await myQuery(`SELECT * FROM orders WHERE user_id = ${user[0].id}`)
-      if (allOrders.length > 0) {
+      // if (allOrders.length > 0) {
         // has the user ever ordered anything
 
         const allCarts = await myQuery (`SELECT * FROM carts WHERE user_id = ${user[0].id}`)
@@ -78,7 +78,7 @@ router.post("/login", async (req, res) => {
             cartDate = allCarts[allCarts.length-1].created
             console.log("2, sends",token,cart,cartDate,userData,userStatus)
             return res.status(200).send({token,cart,cartDate,userData,userStatus})
-          } 
+          
         } 
           userStatus = 1
           const lastOrder = allOrders[allOrders.length-1]
