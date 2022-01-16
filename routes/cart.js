@@ -35,7 +35,8 @@ router.post("/add", verify, async (req,res)=> {
         return res.status(403).send("Wrong identity")
     }
     try{
-        const {id,status} = req.user
+        const {id} = req.user
+
         const {productId,amount} = req.body
         if (!id || !amount) {
             return res.status(400).send("Info from user is missing.")
