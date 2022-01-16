@@ -65,12 +65,19 @@ router.post("/login", async (req, res) => {
       }
       // user already has an open cart
       const allOrders = await myQuery(`SELECT * FROM orders WHERE user_id = ${user[0].id}`)
+      console.log("allorders:",allOrders)
       // if (allOrders.length > 0) {
         // has the user ever ordered anything
 
         const allCarts = await myQuery (`SELECT * FROM carts WHERE user_id = ${user[0].id}`)
+        console.log("allcarts:",allCarts)
+
         const cartId = allCarts[allCarts.length-1].id
+        console.log("cartid:",cartId)
+
         const orderedCartExists = await myQuery (`SELECT * FROM orders WHERE cart_id = ${cartId}`)
+        console.log("orderedCartExists",orderedCartExists)
+
         if (orderedCartExists.length === 0 ) {
           cart = await myQuery (`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId}`)
           if (cart.length > 0) {
