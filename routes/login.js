@@ -63,42 +63,47 @@ router.post("/login", async (req, res) => {
         userStatus = 3 
         return res.status(200).send({token,userData,userStatus})
       }
-      // user already has an open cart
+      // checks if user ever ordered anything
       const allOrders = await myQuery(`SELECT * FROM orders WHERE user_id = ${user[0].id}`)
       console.log("allorders:",allOrders)
-      // if (allOrders.length > 0) {
-        // has the user ever ordered anything
+      // gets all user's carts in order to know if user never used the system
+      const allCarts = await myQuery (`SELECT * FROM carts WHERE user_id = ${user[0].id}`)
+      console.log("allcarts:",allCarts)
+      // if user's carts and orders are empty, user is brand new and status is 0
+      if (allOrders.length === 0 && allCarts.length === 0) {
+        userStatus = 0
+        console.log("0, sends",token,cart,userData,userStatus)
+        return res.status(200).send({token,cart,userData,userStatus})
+      }
 
-        const allCarts = await myQuery (`SELECT * FROM carts WHERE user_id = ${user[0].id}`)
-        console.log("allcarts:",allCarts)
-
-        const cartId = allCarts[allCarts.length-1].id
-        console.log("cartid:",cartId)
-
-        const orderedCartExists = await myQuery (`SELECT * FROM orders WHERE cart_id = ${cartId}`)
-        console.log("orderedCartExists",orderedCartExists)
-
-        if (orderedCartExists.length === 0 ) {
-          cart = await myQuery (`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId}`)
-          if (cart.length > 0) {
-            userStatus = 2
-            cartDate = allCarts[allCarts.length-1].created
-            console.log("2, sends",token,cart,cartDate,userData,userStatus)
-            return res.status(200).send({token,cart,cartDate,userData,userStatus})
-          
+      // gets user's last cart id to check if it's still open or was already ordered.
+      const cartId = allCarts[allCarts.length-1].id
+      console.log("cartid:",cartId)
+      // checks if was an order to last cart
+      const orderedCartExists = await myQuery (`SELECT * FROM orders WHERE cart_id = ${cartId}`)
+      console.log("orderedCartExists",orderedCartExists)
+      // if last cart WASN'T ordered ....
+      if (orderedCartExists.length === 0 ) {
+        cart = await myQuery (`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId}`)
+      // if cart isn't empty, continue with it
+        if (cart.length > 0) {
+          userStatus = 2
+          cartDate = allCarts[allCarts.length-1].created
+          console.log("2, sends",token,cart,cartDate,userData,userStatus)
+          return res.status(200).send({token,cart,cartDate,userData,userStatus})
         } 
-          userStatus = 1
-          const lastOrder = allOrders[allOrders.length-1]
-          const lastCart = await myQuery(`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${lastOrder.cart_id}`)
-          console.log("1, sends",token,cart,lastOrder,lastCart,userData,userStatus)
+        // if cart IS empty, get relative details
+      }      userStatus = 1
+      const lastOrder = allOrders[allOrders.length-1]
+      const lastCart = await myQuery(`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${lastOrder.cart_id}`)
+      console.log("1, sends",token,cart,lastOrder,lastCart,userData,userStatus)
 
-          return res.status(200).send({token,cart,lastOrder,lastCart,userData,userStatus})
-      } else {
-            userStatus = 0
-            console.log("0, sends",token,cart,userData,userStatus)
-            return res.status(200).send({token,cart,userData,userStatus})
-        }   
-      
+      return res.status(200).send({token,cart,lastOrder,lastCart,userData,userStatus})
+      // } else {
+      //       // userStatus = 0
+      //       // console.log("0, sends",token,cart,userData,userStatus)
+      //       // return res.status(200).send({token,cart,userData,userStatus})
+      // }        
     } catch (err) {
         console.log(err)
         return res.status(500).send(err); 
