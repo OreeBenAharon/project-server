@@ -46,7 +46,7 @@ router.post("/add", verify, async (req,res)=> {
 
           // checks if user already had any cart
 
-        // if (existingCart.length > 0) {
+        if (existingCart.length > 0) {
 
             // if he has any cart, take his last cart's id
 
@@ -64,7 +64,9 @@ router.post("/add", verify, async (req,res)=> {
 
             // checks cart if still active, which means it still has not been ordered
 
-            if (orderedCart.length === 0 || existingCart.length > 0) {
+            if (orderedCart.length === 0 
+                // && existingCart.length > 0
+                ) {
 
             // checks if product already in user's cart, in order not adding it twice
 
@@ -81,9 +83,10 @@ router.post("/add", verify, async (req,res)=> {
                 console.log("product added not exists",cart)
 
                 return res.status(201).send({cart})
-                // }
+                }
             }
-        } else { 
+        } 
+        // else { 
 
             //  if user don't have a cart at all, or never had a cart. Creates cart
 
@@ -96,7 +99,7 @@ router.post("/add", verify, async (req,res)=> {
             const cart = await myQuery (`SELECT * FROM cart_products INNER JOIN products ON cart_products.product_id = products.id WHERE cart_id = ${cartId}`)
             console.log("product added cart not exist",cart)
             return res.status(201).send({cart})
-        }
+        // }
     } catch (err) {
         console.log(err)
         return res.status(500).send(err);
