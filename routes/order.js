@@ -41,26 +41,26 @@ router.post("/", verify, async (req,res)=> {
         const orderId = order[order.length-1].id
         console.log("order got is",order,"and id is",orderId)
         
-                // // await fs.writeFile(  `../server/receptions/order${orderId}.txt`, 
-                // await fs.writeFile(  `:local/order${orderId}.txt`, 
-                // `Recept For ${fname} ${lname}:\r\n Ordered at ${order[order.length-1].ordered_at.toLocaleString()} to ${order[order.length-1].city},${order[order.length-1].street}\r\n\r\n`,
-                //                 (err) => {if (err) return console.log(err)}
-                //                 );
-                // console.log("cart length is ",cart.length)
-                // for (const prod of cart) {
-                //     // await fs.appendFile(  `../server/receptions/order${orderId}.txt`, `${prod.title}: ${prod.price} x ${prod.amount} = ${prod.price * prod.amount}₪\r\n`,
-                //     await fs.appendFile(  `:local/order${orderId}.txt`, `${prod.title}: ${prod.price} x ${prod.amount} = ${prod.price * prod.amount}₪\r\n`,
-                //     (err)=> {if (err) {console.log(err)}
-                //     })
-                // }       
-                // // await fs.appendFile(  `../server/receptions/order${orderId}.txt`, `total: ${total}₪`,
-                // await fs.appendFile(  `:local/order${orderId}.txt`, `total: ${total}₪`,
-                //     (err)=> {if (err) {console.log(err)}
-                //     })
+                // await fs.writeFile(  `../server/receptions/order${orderId}.txt`, 
+                await fs.writeFile(  `order${orderId}.txt`, 
+                `Recept For ${fname} ${lname}:\r\n Ordered at ${order[order.length-1].ordered_at.toLocaleString()} to ${order[order.length-1].city},${order[order.length-1].street}\r\n\r\n`,
+                                (err) => {if (err) return console.log(err)}
+                                );
+                console.log("cart length is ",cart.length)
+                for (const prod of cart) {
+                    // await fs.appendFile(  `../server/receptions/order${orderId}.txt`, `${prod.title}: ${prod.price} x ${prod.amount} = ${prod.price * prod.amount}₪\r\n`,
+                    await fs.appendFile(  `order${orderId}.txt`, `${prod.title}: ${prod.price} x ${prod.amount} = ${prod.price * prod.amount}₪\r\n`,
+                    (err)=> {if (err) {console.log(err)}
+                    })
+                }       
+                // await fs.appendFile(  `../server/receptions/order${orderId}.txt`, `total: ${total}₪`,
+                await fs.appendFile(  `order${orderId}.txt`, `total: ${total}₪`,
+                    (err)=> {if (err) {console.log(err)}
+                    })
                                                 
-                // const filename = `order${orderId}.txt`
-                return res.status(201).send('ok')
-                // return res.status(201).send({filename})
+                const filename = `order${orderId}.txt`
+                // return res.status(201).send('ok')
+                return res.status(201).send({filename})
     } catch (err) {
         console.log(err)
         return res.status(500).send(err);
